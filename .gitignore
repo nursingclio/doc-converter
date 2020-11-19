@@ -1,0 +1,19 @@
+## Folders and files for git to ignore
+
+# Build and test tool files and directories.
+/node_modules
+/npm-debug.log
+
+# Ignore the contents of the input and output directories.
+input/*
+output/*
+
+# But keep the directories.
+!input/.gitkeep
+!output/.gitkeep
+
+# Some OS generated files.
+*~
+.Trash-*
+.DS_Store
+._*
