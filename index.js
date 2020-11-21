@@ -6,6 +6,7 @@
 const fs = require( 'fs' );
 const path = require( 'path' );
 const mammoth = require( 'mammoth' );
+// const { resolve } = require('path');
 
 /**
  * Constants
@@ -19,13 +20,43 @@ const OUTPUT_DIR = 'output';
  * @param {string} filePath
  */
 const convert = ( filePath ) => {
-	return new Promise( ( resolve, reject ) => {
-		mammoth.convertToHtml( { path: filePath } )
+	// @TODO determine if Word uses the same style name for block quotations.
+	const options = {
+		styleMap: [
+			"p[style-name='Quotations'] => gblockquote"
+		]
+	};
+
+	return new Promise( ( resolve ) => {
+		mammoth.convertToHtml( { path: filePath }, options )
 		.then( function( result ) {
 			const html = result.value;
 			resolve( html );
 		} )
 		.done();
+	} );
+};
+
+/**
+ * Clean and formats the raw HTML for Nursing Clio WP.
+ *
+ * @param {string} rawHtml
+ */
+const cleanHtml = ( rawHtml ) => {
+	return new Promise( ( resolve ) => {
+		const html = rawHtml.replace( /<\/ol>$/, '</ol>\n</section>' )
+							.replace( /<ol><li id="footnote/, '<section id="sources">\n<h4>Notes</h4>\n<ol class="footnotes">\n<li id="footnote' )
+							.replace( /<li id="footnote-(\d+)">.*?<p>/g, '<li id="footnote-$1">' )
+							.replace( /<\/a><\/p><\/li>/g, '</a></li>\n' )
+							.replace( /<p>/g, '' )
+							.replace( /<\/p>/g, '\n\n' )
+							.replace( /<sup><sup>/g, '<sup>' )
+							.replace( /<\/sup><\/sup>/g, '</sup>' )
+							.replace( /id="footnote-ref/g, 'class="footnote-ref" id="footnote-ref' )
+							.replace( /">↑/g, '" class="return-link">Return to text.' )
+							.replace( /<gblockquote>/g, '[gblockquote]' )
+							.replace( /<\/gblockquote>/g, '[/gblockquote]\n\n');
+		resolve( html );
 	} );
 };
 
@@ -64,6 +95,7 @@ const init = async function() {
 				const rawHtml = await convert( filePath );
 
 				// Run text replacements.
+				const html = await cleanHtml( rawHtml );
 
 				// Write content to output.
 				writeFile( html, file );
