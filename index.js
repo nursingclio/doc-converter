@@ -45,9 +45,9 @@ const convert = ( filePath ) => {
 const cleanHtml = ( rawHtml ) => {
 	return new Promise( ( resolve ) => {
 		const html = rawHtml.replace( /<\/ol>$/, '</ol>\n</section>' )
-							.replace( /<ol><li id="footnote/, '<section id="sources">\n<h4>Notes</h4>\n<ol class="footnotes">\n<li id="footnote' )
+							.replace( /<ol><li id="footnote/, '<section id="sources">\n<h4>Notes</h4><ol class="footnotes"><li id="footnote' )
 							.replace( /<li id="footnote-(\d+)">.*?<p>/g, '<li id="footnote-$1">' )
-							.replace( /<\/a><\/p><\/li>/g, '</a></li>\n' )
+							.replace( /<\/a><\/p><\/li>/g, '</a></li>' )
 							.replace( /<p>/g, '' )
 							.replace( /<\/p>/g, '\n\n' )
 							.replace( /<sup><sup>/g, '<sup>' )
@@ -55,7 +55,12 @@ const cleanHtml = ( rawHtml ) => {
 							.replace( /id="footnote-ref/g, 'class="footnote-ref" id="footnote-ref' )
 							.replace( /">↑/g, '" class="return-link">Return to text.' )
 							.replace( /<gblockquote>/g, '[gblockquote]' )
-							.replace( /<\/gblockquote>/g, '[/gblockquote]\n\n');
+							.replace( /<\/gblockquote>/g, '[/gblockquote]\n\n')
+							.replace( /\t/g, ' ' )
+							.replace( / \n/g, '' )
+							.replace( /\n+/g, '\n\n' )
+							.replace( /<\/li>/g, '</li>\n' )
+							.replace( /<\/h(\d)>/g, '</h$1>\n\n' );
 		resolve( html );
 	} );
 };
