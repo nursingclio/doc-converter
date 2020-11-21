@@ -1,40 +1,73 @@
 #!/usr/bin/env node
 
+/**
+ * External dependencies
+ */
 const fs = require( 'fs' );
 const path = require( 'path' );
 const mammoth = require( 'mammoth' );
 
-const input = 'input';
-const output = 'output';
+/**
+ * Constants
+ */
+const INPUT_DIR = 'input';
+const OUTPUT_DIR = 'output';
+
+/**
+ * Converts docx files to html.
+ *
+ * @param {string} filePath
+ */
+const convert = ( filePath ) => {
+	return new Promise( ( resolve, reject ) => {
+		mammoth.convertToHtml( { path: filePath } )
+		.then( function( result ) {
+			const html = result.value;
+			resolve( html );
+		} )
+		.done();
+	} );
+};
+
+/**
+ * Writes the HTML content to the output directory.
+ *
+ * @param {string} content
+ * @param {string} file
+ */
+const writeFile = ( content, file ) => {
+	const fileName = path.basename( file, '.docx' );
+	const outputPath = path.format( {
+		dir: OUTPUT_DIR,
+		name: fileName,
+		ext: '.html',
+	} );
+
+	fs.writeFile( outputPath, content, err => {
+		if ( err ) {
+			return console.log( err );
+		}
+	} );
+};
 
 const init = async function() {
     try {
-        const files = await fs.promises.readdir( input );
+        const files = await fs.promises.readdir( INPUT_DIR );
 
         for( const file of files ) {
-            const inputPath = path.join( input, file );
-			const stat = await fs.promises.stat( inputPath );
+			const filePath = path.join( INPUT_DIR, file );
+			const stat = await fs.promises.stat( filePath );
 
-            // We only process docx files.
+            // Only process docx files.
             if ( stat.isFile() && '.docx' === path.extname( file ) ) {
-				const fileName = path.basename( file, '.docx' );
-				const outputPath = path.format( {
-					dir: output,
-					name: fileName,
-					ext: '.html',
-				} );
+				// Convert the docx to html using Mammoth.
+				const rawHtml = await convert( filePath );
 
-				mammoth.convertToHtml( { path: inputPath } )
-					.then( function( result ) {
-						const html = result.value;
+				// Run text replacements.
 
-						fs.writeFile( outputPath, html, err => {
-							if ( err ) {
-								return console.log( err );
-							}
-						} );
-					} )
-					.done();
+				// Write content to output.
+				writeFile( html, file );
+
 			} else if ( '.gitkeep' !== file ) {
 				console.log( `Ignored "${file}": Only docx files can be converted. Other files and folders will be skipped.` );
             }
@@ -43,6 +76,6 @@ const init = async function() {
     catch( e ) {
         console.error( 'Oops', e );
     }
-}
+};
 
 init();
