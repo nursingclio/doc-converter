@@ -6,7 +6,6 @@
 const fs = require( 'fs' );
 const path = require( 'path' );
 const mammoth = require( 'mammoth' );
-// const { resolve } = require('path');
 
 /**
  * Constants
