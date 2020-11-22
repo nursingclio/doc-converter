@@ -13,21 +13,24 @@
 		"url": "hhttps://github.com/nursingclio/doc-converter/issues"
 	},
 	"keywords": [
-		"wordpress",
 		"node",
+		"docx",
 		"html",
 		"conversion"
 	],
 	"main": "index.js",
-	"scripts": {
-		"NCconvert": "./index.js",
-		"clean:input": "rimraf input/*",
-		"clean:output": "rimraf output/*",
-		"clean": "run-p clean:*"
-	},
 	"devDependencies": {
 		"mammoth": "^1.4.14",
+		"npm-package-json-lint": "^5.1.0",
 		"npm-run-all": "^4.1.5",
 		"rimraf": "^3.0.2"
+	},
+	"scripts": {
+		"NCconvert": "./index.js",
+		"lint:pkg": "npmPkgJsonLint .",
+		"clean:input": "rimraf input/*",
+		"clean:output": "rimraf output/*",
+		"clean": "run-p clean:*",
+		"test": "run-p 'lint:*'"
 	}
 }
