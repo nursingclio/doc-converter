@@ -22,7 +22,8 @@ const convert = ( filePath ) => {
 	// @TODO determine if Word uses the same style name for block quotations.
 	const options = {
 		styleMap: [
-			"p[style-name='Quotations'] => gblockquote"
+			"p[style-name='Quotations'] => gblockquote",
+			"p[style-name='Quote'] => gblockquote",
 		]
 	};
 
