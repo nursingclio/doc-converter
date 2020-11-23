@@ -27,6 +27,7 @@
 	},
 	"scripts": {
 		"NCconvert": "./index.js",
+		"NCconvertwin": "node index.js",
 		"lint:pkg": "npmPkgJsonLint .",
 		"clean:input": "rimraf input/*",
 		"clean:output": "rimraf output/*",
