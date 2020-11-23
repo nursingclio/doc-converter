@@ -54,7 +54,7 @@ If you prefer to use Git to keep the NC Doc Converter up to date, you can instea
 ## How to Use
 
 1. Move the docx files you want to convert into the `input` folder in the NC Doc Converter folder (which will be called "doc-converter-x.x.x" or "doc-converter" by default).
-2. The NC Doc Converter must be run from a terminal. Open a terminal in the Doc Converter directory.
+2. The NC Doc Converter must be run from a terminal. Open a terminal in the Doc Converter directory. (The shortcut for this is to double-click on the File Explorer address bar or press `alt` + `d`, and then type `cmd` and press enter.)
 3. Run the command `npm run NCconvert`
 4. You should now find html files in the `output` directory corresponding to the docx files in the `input` directory.
 5. You can run the `NCconvert` npm command multiple times with the same files. The output file will be overwritten.
