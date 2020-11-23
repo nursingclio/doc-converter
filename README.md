@@ -45,11 +45,15 @@ Once the installation prerequisites are met, you are ready to install and use th
 
 ### Install from source
 
-[Download the latest version from GitHub](https://github.com/nursingclio/doc-converter/releases/latest) and extract it into whatever directory you like.
+- [Download the latest version from GitHub](https://github.com/nursingclio/doc-converter/releases/latest) and extract it into whatever directory you like.
+- Open a terminal in the Doc Converter directory. (The shortcut for this is to double-click on the File Explorer address bar or press `alt` + `d`, and then type `cmd` and press enter.)
+- Install the npm dependencies with the command: `npm install`
 
 ### Install using Git
 
 If you prefer to use Git to keep the NC Doc Converter up to date, you can instead clone it into your desired directory with `git clone https://github.com/nursingclio/doc-converter.git`.
+- Open a terminal in the Doc Converter directory. (The shortcut for this is to double-click on the File Explorer address bar or press `alt` + `d`, and then type `cmd` and press enter.)
+- Install the npm dependencies with the command: `npm install`
 
 ## How to Use
 
